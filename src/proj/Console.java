@@ -4,7 +4,7 @@ package proj;
 
 import java.util.ArrayList;
 
-public class Demo {
+public class Console {
 
     private static ArrayList<String> scores = new ArrayList<String>();
     private static final String[] nomi = {"Riccardo", "Gianpippo", "Pierpaolo", "Yudri", "Owusu"};
@@ -17,7 +17,7 @@ public class Demo {
     private static float max = 1.30f;
     private static float vittoria = 100.0f;
 
-    public static void main(String[] args) {
+    public static void run(String[] args) {
         InitAll();
         StartAll();
         WaitAll();
