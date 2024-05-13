@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class Console {
 
     private static ArrayList<String> scores = new ArrayList<String>();
-    private static final String[] nomi = {"Riccardo", "Gianpippo", "Pierpaolo", "Yudri", "Owusu"};
+    private static final String[] nomi = {"Nunzio", "Salvatore", "Roberto", "Williams", "Paolo"};
     
     private static final int corridori = nomi.length;
     private static Thread[] ts = new Thread[corridori];
@@ -22,9 +22,13 @@ public class Console {
         StartAll();
         WaitAll();
 
+        System.out.println("\n=============CLASSIFICA=============\n");
+        
         for (String c : scores) {
             System.out.println((scores.indexOf(c) + 1) + "] " + c);
         }
+
+        System.out.println("\n====================================\n");
     }
 
     private static void InitAll() {
