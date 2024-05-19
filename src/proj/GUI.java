@@ -1,8 +1,9 @@
+// Bergamasco Jacopo, 4AIA, A.S. 2023-2024
+
 package proj;
 
-import java.awt.EventQueue;
-
 import java.awt.*;
+import proj.utils.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -15,16 +16,24 @@ public class GUI extends JFrame implements TimeManager {
 	private final long dt = (long)(1.0 / (double)FPS * 1000.0);
 	private long frameTime;
 
+	private final int WIDTH = 16;
+	private final int HEIGHT = 9;
+	private final int FACTOR = 100;
+	
 	private boolean run;
 
 	public GUI() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		// OPERAZIONI FINESTRA
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
-		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
+		setContentPane(contentPane);
+		
+		// OPERAZIONE FRAME
+		setTitle("Corsa 100 m");
+		setResizable(false);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, WIDTH*FACTOR, HEIGHT*FACTOR);
 		
 		Canvas ctx = new Canvas(this);
 		contentPane.add(ctx, BorderLayout.CENTER);

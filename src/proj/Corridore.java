@@ -2,10 +2,8 @@
 
 package proj;
 
-import java.util.Random;
-import java.util.ArrayList;
-
-import jlibs.Semaforo;
+import jlibs.*;
+import java.util.*;
 
 public class Corridore implements Runnable {
     

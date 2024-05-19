@@ -1,7 +1,9 @@
+// Bergamasco Jacopo, 4AIA, A.S. 2023-2024
+
 package proj;
 
 import java.awt.*;
-
+import proj.utils.*;
 import javax.swing.*;
 
 public class Canvas extends JPanel {
@@ -16,11 +18,6 @@ public class Canvas extends JPanel {
     public void paint(Graphics g) {
         g.setColor(new Color(0x181818));
         g.fillRect(0, 0, getWidth(), getHeight());
-        int r = getWidth()/6;
-        g.setColor(Color.WHITE);
-        drawCircle(g, getWidth() / 2 - r, getHeight() / 2 - r, r);
-        g.setColor(new Color(0xBFAD40));
-        fillCircle(g, getWidth() / 2 + (int)(Math.cos(dt.getFrameTime()) * r), getHeight() / 2 + (int)(Math.sin(dt.getFrameTime()) * r), 4);
     }
     
     public void drawCircle(Graphics g, int x, int y, int r) {
