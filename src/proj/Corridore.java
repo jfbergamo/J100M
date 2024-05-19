@@ -37,10 +37,11 @@ public class Corridore implements Runnable {
         while (!arrivato) {
             dist += r.nextFloat(r_min, r_max + 1);
             if (dist >= vit) {
-                s.P();
                 arrivato = true;
+                s.P();
                 scores.add(Thread.currentThread().getName());
                 s.V();
+                dist = vit;
             }
             System.out.println(Thread.currentThread().getName() + ": " + dist);
         }
