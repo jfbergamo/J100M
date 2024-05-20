@@ -7,14 +7,14 @@ import java.util.ArrayList;
 
 public class Main {
 
-    public static ArrayList<String> scores = new ArrayList<String>();
+    protected static ArrayList<String> scores = new ArrayList<String>();
     public static final String[] nomi = {"Nunzio", "Salvatore", "Roberto", "Williams", "Paolo"};
 
     private static final int corridori = Main.nomi.length;
     private static Thread[] ts = new Thread[corridori];
     protected static Corridore[] cs = new Corridore[corridori];
 
-    protected static int giri = 4;
+    protected static int giri = 3;
     public static final float min = 0.50f;
     public static final float max = 1.30f;
     public static final float vittoria = 100.0f * giri;

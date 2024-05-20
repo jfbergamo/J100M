@@ -3,18 +3,16 @@
 package proj;
 
 import java.awt.*;
-import proj.utils.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-public class GUI extends JFrame implements TimeManager {
+public class GUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 
 	private final int FPS = 40;
 	private final long dt = Math.round(1.0/FPS * 1000.0);
-	private long frameTime;
 
 	private final int WIDTH = 16;
 	private final int HEIGHT = 9;
@@ -35,10 +33,9 @@ public class GUI extends JFrame implements TimeManager {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, WIDTH*FACTOR, HEIGHT*FACTOR);
 		
-		Tela ctx = new Tela(this, Main.cs, Main.giri);
+		Tela ctx = new Tela(Main.cs, Main.giri);
 		contentPane.add(ctx, BorderLayout.CENTER);
 
-		frameTime = 0;
 		run = true;
 
 		new Thread(new Runnable() {
@@ -47,8 +44,6 @@ public class GUI extends JFrame implements TimeManager {
 				long t = System.currentTimeMillis();
 				while (run) {
 					if (t + dt < System.currentTimeMillis()) {
-						frameTime += dt;
-
 						ctx.repaint();						
 
 						t = System.currentTimeMillis();
@@ -57,10 +52,5 @@ public class GUI extends JFrame implements TimeManager {
 			}
 		}).start();
 		// Main.StartAll();
-	}
-
-	@Override
-	public long getFrameTime() {
-		return frameTime;
 	}
 }

@@ -3,27 +3,24 @@
 package proj;
 
 import java.awt.*;
-import proj.utils.*;
 import javax.swing.*;
 
 public class Tela extends JPanel {
     
     int n;
     Color[] colors;
-    private TimeManager dt;
     private Corridore[] corridores;
+    private boolean hasSeenClassifica;
 
-    public Tela(TimeManager T, Corridore[] corridori, int giri) {
+    public Tela(Corridore[] corridori, int giri) {
         n = giri;
-        dt = T;
+        hasSeenClassifica = false;
         corridores = corridori;
         colors = new Color[corridori.length];
         for (int i = 0; i < colors.length; ++i) {
             colors[i] = RandColor();
         }
     }
-
-    int start = 0;
 
     @Override
     public void paint(Graphics g) {
@@ -33,8 +30,14 @@ public class Tela extends JPanel {
         double rr = getWidth()/12;
         double offset = 25;
 
+        double centerX = getWidth() / 2.0;
+        double centerY = getHeight() / 2.0;
+
+        // int iCenterX = (int)Math.round(centerX);
+        int iCenterY = (int)Math.round(centerY);
+
         g.setColor(Color.RED);
-        // g.drawLine(rr - offset, Math.round(getHeight()/2.0f), 0, Math.round(getHeight()/2.0f));
+        g.drawLine((int)Math.round(centerX + rr - offset), iCenterY, (int)Math.round(centerX + rr + offset * corridores.length), iCenterY);
 
         for (int i = 0; i < corridores.length; ++i) {
             double r = rr + offset * i;
@@ -44,14 +47,29 @@ public class Tela extends JPanel {
                 c.nextCycle();
             }
 
+            if (Main.scores.size() >= corridores.length && !hasSeenClassifica) {
+                hasSeenClassifica = true;
+                showClassifica();
+            }
+
             g.setColor(Color.WHITE);
-            drawCircle(g, (int)Math.round(getWidth() / 2.0), (int)Math.round(getHeight() / 2.0), (int)Math.round(r));
+            drawCircle(g, (int)Math.round(centerX), (int)Math.round(centerY), (int)Math.round(r));
             
             // double x = dt.getFrameTime();
             double x = c.getDist()/c.getVittoria() * n*2*Math.PI;
             g.setColor(colors[i]);
-            fillCircle(g, (int)Math.round(getWidth() / 2.0 + Math.cos(x) * r), (int)Math.round(getHeight() / 2 + Math.sin(x) * r), (int)Math.round(rr/14));
+            fillCircle(g, (int)Math.round(centerX + Math.cos(x) * r), (int)Math.round(centerY + Math.sin(x) * r), (int)Math.round(rr/14));
         }
+    }
+
+    private void showClassifica() {
+        String s = "";
+        for (String c : Main.scores) {
+            s += Integer.toString(Main.scores.indexOf(c) + 1) + "] " + c + "\n";
+        }
+        try {
+            JOptionPane.showMessageDialog(this, s, "CLASSIFICA", 1);
+        } catch (Exception e) {}
     }
 
     public void drawCircle(Graphics g, int x, int y, int r) {
@@ -65,7 +83,7 @@ public class Tela extends JPanel {
     private Color RandColor() {
         int h = (int)(Math.random() * 255);
         int s = (int)(Math.random() * 255);
-        int v = (int)(Math.random() * 255);
-        return new Color(Color.HSBtoRGB(h, s, v));
+        int b = (int)(Math.random() * 255);
+        return new Color(Color.HSBtoRGB(h, s, b));
     }
 }
