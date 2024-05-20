@@ -12,8 +12,8 @@ public class GUI extends JFrame implements TimeManager {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 
-	private final int FPS = 24;
-	private final long dt = (long)((1.0 / (double)FPS) * 1000.0);
+	private final int FPS = 40;
+	private final long dt = Math.round(1.0/FPS * 1000.0);
 	private long frameTime;
 
 	private final int WIDTH = 16;

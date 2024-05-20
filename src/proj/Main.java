@@ -22,7 +22,7 @@ public class Main {
 
     public static void main(String[] args) {
         InitAll();
-
+        
         if (graphic) {
             EventQueue.invokeLater(new Runnable() {
                 public void run() {
