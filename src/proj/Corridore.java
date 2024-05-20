@@ -15,13 +15,16 @@ public class Corridore implements Runnable {
     private float r_max, r_min; // Random Range
     private float vit; // Distanza per vincere
     private float dist; // Distanza percorsa
-    boolean arrivato;
-
+    
+    private String nome;
+    private boolean arrivato;
+    
     private ArrayList<String> scores;
 
     // COSTRUTTORE
 
-    public Corridore(float min, float max, float vittoria, ArrayList<String> punteggi) {
+    public Corridore(String Nome, float min, float max, float vittoria, ArrayList<String> punteggi) {
+        nome = Nome;
         setRMin(min);
         setRMax(max);
         setVittoria(vittoria);
@@ -35,26 +38,38 @@ public class Corridore implements Runnable {
     @Override
     public void run() {
         while (!arrivato) {
-            dist += r.nextFloat(r_min, r_max + 1);
-            if (dist >= vit) {
-                arrivato = true;
-                s.P();
-                scores.add(Thread.currentThread().getName());
-                s.V();
-                dist = vit;
-            }
-            System.out.println(Thread.currentThread().getName() + ": " + dist);
+            nextCycle();
         }
+    }
+
+    public void nextCycle() {
+        dist += r.nextFloat(r_min, r_max + 1);
+        if (dist >= vit) {
+            arrivato = true;
+            s.P();
+            scores.add(getNome());
+            s.V();
+            dist = vit;
+        }
+        System.out.println(getNome() + ": " + dist);
     }
 
     // GETTER
     
+    public String getNome() {
+        return nome;
+    }
+
     public float getVittoria() {
         return vit;
     }
 
     public float getDist() {
         return dist;
+    }
+
+    public boolean isArrivato() {
+        return arrivato;
     }
 
     // SETTER

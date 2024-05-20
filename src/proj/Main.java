@@ -12,13 +12,15 @@ public class Main {
 
     private static final int corridori = Main.nomi.length;
     private static Thread[] ts = new Thread[corridori];
-    private static Corridore[] cs = new Corridore[corridori];
+    protected static Corridore[] cs = new Corridore[corridori];
 
+    protected static int giri = 4;
     public static final float min = 0.50f;
     public static final float max = 1.30f;
-    public static final float vittoria = 100.0f;
+    public static final float vittoria = 100.0f * giri;
 
-    private static final boolean graphic = true;    
+    private static final boolean graphic = true;
+
 
     public static void main(String[] args) {
         InitAll();
@@ -41,8 +43,8 @@ public class Main {
 
     private static void InitAll() {
         for (int i = 0; i < corridori; i++) {
-            cs[i] = new Corridore(min, max, vittoria, Main.scores);
-            ts[i] = new Thread(cs[i], Main.nomi[i]);
+            cs[i] = new Corridore(Main.nomi[i], min, max, vittoria, Main.scores);
+            ts[i] = new Thread(cs[i]);
         }
     }
 

@@ -35,7 +35,7 @@ public class GUI extends JFrame implements TimeManager {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, WIDTH*FACTOR, HEIGHT*FACTOR);
 		
-		Tela ctx = new Tela(this);
+		Tela ctx = new Tela(this, Main.cs, Main.giri);
 		contentPane.add(ctx, BorderLayout.CENTER);
 
 		frameTime = 0;
@@ -57,7 +57,6 @@ public class GUI extends JFrame implements TimeManager {
 			}
 		}).start();
 		// Main.StartAll();
-		System.out.println(dt);
 	}
 
 	@Override
