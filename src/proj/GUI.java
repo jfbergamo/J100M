@@ -12,8 +12,8 @@ public class GUI extends JFrame implements TimeManager {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 
-	private final int FPS = 1;
-	private final long dt = (long)(1.0 / (double)FPS * 1000.0);
+	private final int FPS = 24;
+	private final long dt = (long)((1.0 / (double)FPS) * 1000.0);
 	private long frameTime;
 
 	private final int WIDTH = 16;
@@ -35,7 +35,7 @@ public class GUI extends JFrame implements TimeManager {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, WIDTH*FACTOR, HEIGHT*FACTOR);
 		
-		Canvas ctx = new Canvas(this);
+		Tela ctx = new Tela(this);
 		contentPane.add(ctx, BorderLayout.CENTER);
 
 		frameTime = 0;
@@ -46,7 +46,7 @@ public class GUI extends JFrame implements TimeManager {
 			public void run() {
 				long t = System.currentTimeMillis();
 				while (run) {
-					if (t + dt >= System.currentTimeMillis()) {
+					if (t + dt < System.currentTimeMillis()) {
 						frameTime += dt;
 
 						ctx.repaint();						
@@ -56,7 +56,8 @@ public class GUI extends JFrame implements TimeManager {
 				}
 			}
 		}).start();
-		Main.StartAll();
+		// Main.StartAll();
+		System.out.println(dt);
 	}
 
 	@Override

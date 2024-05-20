@@ -6,11 +6,11 @@ import java.awt.*;
 import proj.utils.*;
 import javax.swing.*;
 
-public class Canvas extends JPanel {
+public class Tela extends JPanel {
     
     private TimeManager dt;
 
-    public Canvas(TimeManager T) {
+    public Tela(TimeManager T) {
         dt = T;
     }
 
@@ -18,6 +18,12 @@ public class Canvas extends JPanel {
     public void paint(Graphics g) {
         g.setColor(new Color(0x181818));
         g.fillRect(0, 0, getWidth(), getHeight());
+
+        double r = getWidth()/6;
+        g.setColor(Color.WHITE);
+        drawCircle(g, (int)Math.round(getWidth() / 2.0 - r), (int)Math.round(getHeight() / 2.0 - r), (int)Math.round(r));
+        g.setColor(new Color(0xBFAD40));
+        fillCircle(g, (int)Math.round(getWidth() / 2.0 + Math.cos(dt.getFrameTime()) * r), (int)Math.round(getHeight() / 2 + Math.sin(dt.getFrameTime()) * r), 12);
     }
     
     public void drawCircle(Graphics g, int x, int y, int r) {
@@ -25,6 +31,6 @@ public class Canvas extends JPanel {
     }
 
     public void fillCircle(Graphics g, int x, int y, int r) {
-        g.fillArc(x, y, r * 2, r * 2, 0, 360);
+        g.fillArc(x - r, y - r, r * 2, r * 2, 0, 360);
     }
 }
