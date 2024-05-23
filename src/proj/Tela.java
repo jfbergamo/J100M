@@ -6,11 +6,17 @@ import java.awt.*;
 import javax.swing.*;
 
 public class Tela extends JPanel {
-    
+
+    // ATTRIBUTI
+
     int n;
     Color[] colors;
+    private int offset;
+    private int defaultRadius;
     private Corridore[] corridores;
     private boolean hasSeenClassifica;
+
+    // COSTRUTTORE E METODI
 
     public Tela(Corridore[] corridori, int giri) {
         n = giri;
@@ -20,6 +26,8 @@ public class Tela extends JPanel {
         for (int i = 0; i < colors.length; ++i) {
             colors[i] = RandColor();
         }
+        defaultRadius = getWidth() / 12;
+        offset = 25;
     }
 
     @Override
@@ -85,5 +93,39 @@ public class Tela extends JPanel {
         int s = (int)(Math.random() * 255);
         int b = (int)(Math.random() * 255);
         return new Color(Color.HSBtoRGB(h, s, b));
+    }
+
+    // 7R e GETTER
+
+    public int getDefaultRadius() {
+        return defaultRadius;
+    }
+
+    public int getOffset() {
+        return offset;
+    }
+
+    public int getCorridoriCount() {
+        return corridores.length;
+    }
+
+    public int getGiri() {
+        return n;
+    }
+
+    public Corridore getCorridore(int i) {
+        if (0 <= i && i < corridores.length) {
+            return corridores[i];
+        } else {
+            return null;
+        }
+    }
+
+    public Color getColor(int i) {
+        if (0 <= i && i < colors.length) {
+            return colors[i];
+        } else {
+            return null;
+        }
     }
 }

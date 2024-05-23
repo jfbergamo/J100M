@@ -51,6 +51,5 @@ public class GUI extends JFrame {
 				}
 			}
 		}).start();
-		// Main.StartAll();
 	}
 }
