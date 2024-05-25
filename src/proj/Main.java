@@ -16,7 +16,7 @@ public class Main {
     private static Thread[] ts = new Thread[corridori];
     protected static Corridore[] cs = new Corridore[corridori];
 
-    protected static int giri = 3;
+    protected static int giri = 4 ;
     public static final float min = 0.50f;
     public static final float max = 1.30f;
     public static final float vittoria = 100.0f * giri;
@@ -58,20 +58,8 @@ public class Main {
 
     protected static void Reset() {
         GUI currentFrame = GUI.getCurrentFrame();
-        currentFrame.dispatchEvent(new WindowEvent(currentFrame, WindowEvent.WINDOW_CLOSING));
         
         InitAll();
-        
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    GUI frame = new GUI();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
     }
 
     protected static void WaitAll() {

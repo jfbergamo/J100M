@@ -20,8 +20,6 @@ public class Tela extends JPanel {
     // COSTRUTTORE E METODI
 
     public Tela(Corridore[] corridori, Font f, int giri) {
-        setLayout(null);
-
         n = giri;
         finished = false;
         corridores = corridori;
