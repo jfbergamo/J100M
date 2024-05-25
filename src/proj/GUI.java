@@ -5,12 +5,15 @@ package proj;
 import java.io.File;
 
 import java.awt.*;
+import java.awt.event.*;
+
 import javax.swing.*;
 import javax.swing.border.*;
 
 public class GUI extends JFrame {
 
-	private static final long serialVersionUID = 1L;
+	private static GUI gui;	
+
 	private JPanel contentPane;
 
 	private final int FPS = 40;
@@ -23,6 +26,8 @@ public class GUI extends JFrame {
 	private final float FONT_SIZE = 32.5f;
 
 	public GUI() {
+		gui = this; // Tranquillo prof so cosa sto facendo, trusta il processo
+
 		// OPERAZIONI FINESTRA
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -44,11 +49,21 @@ public class GUI extends JFrame {
 			System.exit(e.hashCode());
 		}
 
-		JButton btnPlayAgain = new JButton("playAgain");
-		btnPlayAgain.setBounds(168, 120, 89, 23);
-
-		Tela ctx = new Tela(Main.cs, font, btnPlayAgain, Main.giri);
+		Tela ctx = new Tela(Main.cs, font, Main.giri);
 		contentPane.add(ctx, BorderLayout.CENTER);
+
+		JButton btnPlayAgain = new JButton("Gioca ancora");
+		btnPlayAgain.setVisible(false);
+        ctx.add(btnPlayAgain);
+		btnPlayAgain.setBounds(ctx.getWidth() / 2 - 90 / 2, ctx.getHeight() / 2 - 24 / 2, 90, 24);
+
+		btnPlayAgain.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				btnPlayAgain.setVisible(false);
+				Main.Reset();
+			}
+		});
 
 		new Thread(new Runnable() {
 			@Override
@@ -57,14 +72,24 @@ public class GUI extends JFrame {
 				do {
 					if (t + dt < System.currentTimeMillis()) {
 						ctx.repaint();
-											
 
 						t = System.currentTimeMillis();
 					}
 				} while (ctx.hasNotFinished());
-				ctx.repaint();
+				showClassifica();
+				btnPlayAgain.setVisible(true);
 			}
 		}).start();
+	}
+
+	private void showClassifica() {
+		String s = "";
+		for (int i = 0; i < Main.scores.size(); i++) {
+			s += Integer.toString(i + 1) + "] " + Main.scores.get(i) + "\n";
+		}
+		try {
+			JOptionPane.showMessageDialog(null, s, "CLASSIFICA", JOptionPane.INFORMATION_MESSAGE);
+		} catch (Exception e) {}
 	}
 
 	public static String getLongestName(String[] names) {
@@ -76,5 +101,11 @@ public class GUI extends JFrame {
 			}
 		}
 		return it;
+	}
+
+	// 7R E GETTER
+
+	public static GUI getCurrentFrame() {
+		return gui;
 	}
 }

@@ -2,8 +2,10 @@
 
 package proj;
 
-import java.awt.EventQueue;
-import java.util.ArrayList;
+import java.util.*;
+
+import java.awt.*;
+import java.awt.event.*;
 
 public class Main {
 
@@ -52,6 +54,24 @@ public class Main {
         for (Thread t : ts) {
             t.start();
         }
+    }
+
+    protected static void Reset() {
+        GUI currentFrame = GUI.getCurrentFrame();
+        currentFrame.dispatchEvent(new WindowEvent(currentFrame, WindowEvent.WINDOW_CLOSING));
+        
+        InitAll();
+        
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    GUI frame = new GUI();
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     protected static void WaitAll() {

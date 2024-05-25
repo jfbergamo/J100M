@@ -12,23 +12,18 @@ public class Tela extends JPanel {
     private int n;
     private Font font;
     private int offset;
-    private JButton btn;
     private Color[] colors;
+    private boolean finished;
     private int defaultRadius;
     private Corridore[] corridores;
-    private boolean hasSeenClassifica;
 
     // COSTRUTTORE E METODI
 
-    public Tela(Corridore[] corridori, Font f, JButton playAgainButton, int giri) {
+    public Tela(Corridore[] corridori, Font f, int giri) {
         setLayout(null);
 
-        btn = playAgainButton;
-        btn.setVisible(false);
-        add(btn);
-
         n = giri;
-        hasSeenClassifica = false;
+        finished = false;
         corridores = corridori;
         font = f;
 
@@ -90,15 +85,8 @@ public class Tela extends JPanel {
             }
 
             /* Controllo vittoria */ {
-                if (Main.scores.size() >= corridores.length && !hasSeenClassifica) {
-                    hasSeenClassifica = true;
-                    showClassifica();
-                    btn.setBounds(getWidth() / 2 - btn.getWidth() / 2,
-                    getHeight() / 2 - btn.getHeight() / 2, 
-                    btn.getWidth(), 
-                    btn.getHeight()
-                    );
-                    btn.setVisible(true);
+                if (Main.scores.size() >= corridores.length && !finished) {
+                    finished = true;
                 }
             }
         }
@@ -127,17 +115,6 @@ public class Tela extends JPanel {
         int x = getWidth() - offset - metrics.stringWidth(lap);
         g.setColor(Color.WHITE);
         g.drawString(lap, x, y);
-    }
-
-    private boolean showClassifica() {
-        String s = "";
-        for (String c : Main.scores) {
-            s += Integer.toString(Main.scores.indexOf(c) + 1) + "] " + c + "\n";
-        }
-        try {
-            JOptionPane.showConfirmDialog(null, s, "CLASSIFICA", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
-        } catch (Exception e) {}
-        return true;
     }
 
     public void drawCircle(Graphics g, int x, int y, int r) {
@@ -174,7 +151,7 @@ public class Tela extends JPanel {
     }
 
     public boolean hasNotFinished() {
-        return !hasSeenClassifica;
+        return !finished;
     }
 
     public Corridore getCorridore(int i) {
