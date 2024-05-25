@@ -9,17 +9,24 @@ public class Tela extends JPanel {
 
     // ATTRIBUTI
 
-    int n;
-    Font font;
-    Color[] colors;
+    private int n;
+    private Font font;
     private int offset;
+    private JButton btn;
+    private Color[] colors;
     private int defaultRadius;
     private Corridore[] corridores;
     private boolean hasSeenClassifica;
 
     // COSTRUTTORE E METODI
 
-    public Tela(Corridore[] corridori, Font f, int giri) {
+    public Tela(Corridore[] corridori, Font f, JButton playAgainButton, int giri) {
+        setLayout(null);
+
+        btn = playAgainButton;
+        btn.setVisible(false);
+        add(btn);
+
         n = giri;
         hasSeenClassifica = false;
         corridores = corridori;
@@ -56,15 +63,11 @@ public class Tela extends JPanel {
             double radius = defaultRadius + offset * i;
             Corridore c = corridores[i];
 
-            /* Main loop check */ {
+            /* Main loop */ {
                 if (!c.isArrivato()){
                     c.nextCycle();
                 }
                 
-                if (Main.scores.size() >= corridores.length && !hasSeenClassifica) {
-                    hasSeenClassifica = true;
-                    showClassifica();
-                }
             }
             
             /* Disegno pista */ {
@@ -77,12 +80,25 @@ public class Tela extends JPanel {
                 g.setColor(colors[i]);
                 fillCircle(g, (int)Math.round(centerX + Math.cos(x) * radius), (int)Math.round(centerY + Math.sin(x) * radius), (int)Math.round(defaultRadius/14));
             }
-
+            
             /* Punteggi e giri */ {
                 disegnaPunteggi(g, i);
                 int giro = (int)(c.getDist()/c.getVittoria() * n);
                 if (i == 0) {
                     disegnaGiri(g, giro);
+                }
+            }
+
+            /* Controllo vittoria */ {
+                if (Main.scores.size() >= corridores.length && !hasSeenClassifica) {
+                    hasSeenClassifica = true;
+                    showClassifica();
+                    btn.setBounds(getWidth() / 2 - btn.getWidth() / 2,
+                    getHeight() / 2 - btn.getHeight() / 2, 
+                    btn.getWidth(), 
+                    btn.getHeight()
+                    );
+                    btn.setVisible(true);
                 }
             }
         }
@@ -113,14 +129,15 @@ public class Tela extends JPanel {
         g.drawString(lap, x, y);
     }
 
-    private void showClassifica() {
+    private boolean showClassifica() {
         String s = "";
         for (String c : Main.scores) {
             s += Integer.toString(Main.scores.indexOf(c) + 1) + "] " + c + "\n";
         }
         try {
-            JOptionPane.showMessageDialog(this, s, "CLASSIFICA", 1);
+            JOptionPane.showConfirmDialog(null, s, "CLASSIFICA", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception e) {}
+        return true;
     }
 
     public void drawCircle(Graphics g, int x, int y, int r) {
@@ -154,6 +171,10 @@ public class Tela extends JPanel {
 
     public int getGiri() {
         return n;
+    }
+
+    public boolean hasNotFinished() {
+        return !hasSeenClassifica;
     }
 
     public Corridore getCorridore(int i) {

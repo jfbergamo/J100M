@@ -22,8 +22,6 @@ public class GUI extends JFrame {
 	
 	private final float FONT_SIZE = 32.5f;
 
-	private boolean run;
-
 	public GUI() {
 		// OPERAZIONI FINESTRA
 		contentPane = new JPanel();
@@ -46,22 +44,25 @@ public class GUI extends JFrame {
 			System.exit(e.hashCode());
 		}
 
-		Tela ctx = new Tela(Main.cs, font, Main.giri);
-		contentPane.add(ctx, BorderLayout.CENTER);
+		JButton btnPlayAgain = new JButton("playAgain");
+		btnPlayAgain.setBounds(168, 120, 89, 23);
 
-		run = true;
+		Tela ctx = new Tela(Main.cs, font, btnPlayAgain, Main.giri);
+		contentPane.add(ctx, BorderLayout.CENTER);
 
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
 				long t = System.currentTimeMillis();
-				while (run) {
+				do {
 					if (t + dt < System.currentTimeMillis()) {
-						ctx.repaint();						
+						ctx.repaint();
+											
 
 						t = System.currentTimeMillis();
 					}
-				}
+				} while (ctx.hasNotFinished());
+				ctx.repaint();
 			}
 		}).start();
 	}
