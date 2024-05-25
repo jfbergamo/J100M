@@ -2,6 +2,8 @@
 
 package proj;
 
+import java.io.File;
+
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -18,6 +20,8 @@ public class GUI extends JFrame {
 	private final int HEIGHT = 9;
 	private final int FACTOR = 100;
 	
+	private final float FONT_SIZE = 32.5f;
+
 	private boolean run;
 
 	public GUI() {
@@ -33,7 +37,16 @@ public class GUI extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, WIDTH*FACTOR, HEIGHT*FACTOR);
 		
-		Tela ctx = new Tela(Main.cs, Main.giri);
+		// FONT
+		Font font = null;
+		try {
+			font = Font.createFont(Font.TRUETYPE_FONT, new File("assets/font/Burbank Big Condensed Black.otf")).deriveFont(FONT_SIZE);
+		} catch (Exception e) {
+			System.err.println("ERROR: Impossibile inizializzare il font:\n" + e.getMessage());
+			System.exit(e.hashCode());
+		}
+
+		Tela ctx = new Tela(Main.cs, font, Main.giri);
 		contentPane.add(ctx, BorderLayout.CENTER);
 
 		run = true;
@@ -51,5 +64,16 @@ public class GUI extends JFrame {
 				}
 			}
 		}).start();
+	}
+
+	public static String getLongestName(String[] names) {
+		if (names.length <= 0) return null;
+		String it = names[0];
+		for (String name : names) {
+			if (name.length() > it.length()) {
+				it = name;
+			}
+		}
+		return it;
 	}
 }

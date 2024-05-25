@@ -53,37 +53,45 @@ public class Corridore implements Runnable {
         }
         System.out.println(getNome() + ": " + dist);
     }
-
+    
     // GETTER
     
     public String getNome() {
         return nome;
     }
-
+    
+    public static String[] getNomi(Corridore[] cs) {
+        String[] names = new String[cs.length];
+        for (int i = 0; i < cs.length; i++) {
+            names[i] = cs[i].getNome();
+        }
+        return names;
+    }
+    
     public float getVittoria() {
         return vit;
     }
-
+    
     public float getDist() {
         return dist;
     }
-
+    
     public boolean isArrivato() {
         return arrivato;
     }
-
+    
     // SETTER
-
+    
     private void setRMin(float m) {
         r_min = m;
     }
-
+    
     private void setRMax(float M) {
         r_max = M;
     }
-
+    
     public void setVittoria(float vittoria) {
         vit = vittoria;
     }
-
+    
 }
