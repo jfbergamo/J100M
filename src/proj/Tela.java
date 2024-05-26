@@ -3,6 +3,10 @@
 package proj;
 
 import java.awt.*;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+
 import javax.swing.*;
 
 public class Tela extends JPanel {
@@ -12,7 +16,7 @@ public class Tela extends JPanel {
     private int n;
     private Font font;
     private int offset;
-    private Color[] colors;
+    private HashMap<Corridore, Color> colors;
     private boolean finished;
     private int defaultRadius;
     private Corridore[] corridores;
@@ -25,9 +29,9 @@ public class Tela extends JPanel {
         corridores = corridori;
         font = f;
 
-        colors = new Color[corridori.length];
-        for (int i = 0; i < colors.length; ++i) {
-            colors[i] = RandColor();
+        colors = new HashMap<Corridore, Color>();
+        for (int i = 0; i < corridores.length; ++i) {
+            colors.put(corridores[i], RandColor());
         }
         
         offset = 25;
@@ -60,7 +64,6 @@ public class Tela extends JPanel {
                 if (!c.isArrivato()){
                     c.nextCycle();
                 }
-                
             }
             
             /* Disegno pista */ {
@@ -70,39 +73,53 @@ public class Tela extends JPanel {
             
             /* Disegno giocatori */ {
                 double x = c.getDist()/c.getVittoria() * n*2*Math.PI;
-                g.setColor(colors[i]);
+                g.setColor(colors.get(c));
                 fillCircle(g, (int)Math.round(centerX + Math.cos(x) * radius), (int)Math.round(centerY + Math.sin(x) * radius), (int)Math.round(defaultRadius/14));
             }
             
-            /* Punteggi e giri */ {
-                disegnaPunteggi(g, i);
+            /* Giri */ {
                 int giro = (int)(c.getDist()/c.getVittoria() * n);
                 if (i == 0) {
                     disegnaGiri(g, giro);
                 }
             }
+            
+        }
+        
+        Corridore[] sorted = corridores.clone();
+        Arrays.sort(corridores, new Comparator<Corridore>() {
+            @Override
+            public int compare(Corridore a, Corridore b) {
+                return Float.compare(a.getDist(), b.getDist());
+            }
+        });
 
-            /* Controllo vittoria */ {
-                if (Main.scores.size() >= corridores.length && !finished) {
-                    finished = true;
-                }
+        disegnaPunteggi(g, sorted);
+        
+        /* Controllo vittoria */ {
+            if (Main.scores.size() >= corridores.length && !finished) {
+                finished = true;
             }
         }
     }
     
-    private void disegnaPunteggi(Graphics g, int i) {
+    private void disegnaPunteggi(Graphics g, Corridore[] cc) {
         FontMetrics metrics = g.getFontMetrics();
         int fontHeight = metrics.getHeight();
-        Corridore c = corridores[i];
         
         int x = offset;
         int xOffset = x*2 + metrics.stringWidth(GUI.getLongestName(Corridore.getNomi(corridores)));
-        int y = offset + fontHeight * i + fontHeight/2;
-        
-        g.drawString(c.getNome() + ":", x, y);
-        
-        String dist = Float.toString(Math.round(c.getDist()*100f)/100f);
-        g.drawString(dist + " mt.", xOffset, y);
+        for (int i = 0; i < cc.length; i++) {
+            Corridore c = cc[i];
+
+            int y = offset + fontHeight * i + fontHeight/2;
+            
+            g.setColor(colors.get(c));
+            g.drawString(c.getNome() + ":", x, y);
+            
+            String dist = Float.toString(Math.round(c.getDist()*100f)/100f);
+            g.drawString(dist + " mt.", xOffset, y);
+        }
     }
     
     private void disegnaGiri(Graphics g, int giro) {
@@ -155,14 +172,6 @@ public class Tela extends JPanel {
     public Corridore getCorridore(int i) {
         if (0 <= i && i < corridores.length) {
             return corridores[i];
-        } else {
-            return null;
-        }
-    }
-
-    public Color getColor(int i) {
-        if (0 <= i && i < colors.length) {
-            return colors[i];
         } else {
             return null;
         }

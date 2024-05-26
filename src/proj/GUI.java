@@ -102,12 +102,21 @@ public class GUI extends JFrame {
 	}
 	
 	private void showClassifica() {
-		String s = "";
+		String messaggio = "";
 		for (int i = 0; i < Main.scores.size(); i++) {
-			s += Integer.toString(i + 1) + "] " + Main.scores.get(i) + "\n";
+			messaggio += Integer.toString(i + 1) + "] " + Main.scores.get(i) + "\n";
 		}
 		try {
-			JOptionPane.showMessageDialog(null, s, "CLASSIFICA", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null,
+				messaggio,
+				"CLASSIFICA",
+				JOptionPane.INFORMATION_MESSAGE
+			);
+			JOptionPane.showMessageDialog(null,
+				"Premi il pulsante al centro dello schermo per giocare ancora.",
+				"CLASSIFICA",
+				JOptionPane.INFORMATION_MESSAGE
+			);
 		} catch (Exception e) {}
 	}
 

@@ -18,7 +18,7 @@ public class Main {
 
     protected static int giri = 1;
     public static final float min = 0.50f;
-    public static final float max = 1.30f;
+    public static final float max = 0.69f; //1.30f;
     public static final float vittoria = 100.0f * giri;
 
     private static final boolean graphic = true;
