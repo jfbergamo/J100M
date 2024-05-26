@@ -16,7 +16,7 @@ public class Main {
     private static Thread[] ts = new Thread[corridori];
     protected static Corridore[] cs = new Corridore[corridori];
 
-    protected static int giri = 4 ;
+    protected static int giri = 1;
     public static final float min = 0.50f;
     public static final float max = 1.30f;
     public static final float vittoria = 100.0f * giri;
@@ -31,13 +31,13 @@ public class Main {
             EventQueue.invokeLater(new Runnable() {
                 public void run() {
                     try {
-                        GUI frame = new GUI();
-                        frame.setVisible(true);
+                        new GUI();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             });
+            System.out.println("chiusura main thread");
         } else {
             Console.run();
         }
@@ -60,6 +60,19 @@ public class Main {
         GUI currentFrame = GUI.getCurrentFrame();
         
         InitAll();
+
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    GUI frame = new GUI();
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        currentFrame.dispatchEvent(new WindowEvent(currentFrame, WindowEvent.WINDOW_CLOSING));
     }
 
     protected static void WaitAll() {

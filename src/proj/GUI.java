@@ -16,6 +16,10 @@ public class GUI extends JFrame {
 
 	private JPanel contentPane;
 
+	private Tela ctx;
+	private Thread tick;
+	private JButton btnPlayAgain;
+
 	private final int FPS = 60;
 	private final long dt = Math.round(1.0/FPS * 1000.0);
 
@@ -37,7 +41,7 @@ public class GUI extends JFrame {
 		// OPERAZIONE FRAME
 		setTitle("Corsa 100 m");
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, WIDTH*FACTOR, HEIGHT*FACTOR);
 		
 		// FONT
@@ -49,15 +53,14 @@ public class GUI extends JFrame {
 			System.exit(e.hashCode());
 		}
 
-		Tela ctx = new Tela(Main.cs, font, Main.giri);
+		ctx = new Tela(Main.cs, font, Main.giri);
 		contentPane.add(ctx, BorderLayout.CENTER);
 		ctx.setLayout(null);
 
-		JButton btnPlayAgain = new JButton("Gioca ancora");
+		btnPlayAgain = new JButton("Gioca ancora");
 		btnPlayAgain.setVisible(false);
         ctx.add(btnPlayAgain);
-		btnPlayAgain.setBounds(ctx.getWidth() / 2 - 90 / 2, ctx.getHeight() / 2 - 24 / 2, 90, 24);
-
+		
 		btnPlayAgain.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -65,24 +68,28 @@ public class GUI extends JFrame {
 				Main.Reset();
 			}
 		});
-
-		new Thread(new Runnable() {
+		
+		setVisible(true);
+		tick = new Thread(new Runnable() {
 			@Override
 			public void run() {
+				System.out.println("apertura thread");
 				long t = System.currentTimeMillis();
 				do {
 					if (t + dt <= System.currentTimeMillis()) {
 						ctx.repaint();
-
+						
 						t = System.currentTimeMillis();
 					}
 				} while (ctx.hasNotFinished());
 				showClassifica();
+				btnPlayAgain.setBounds(ctx.getWidth() / 2 - 120 / 2, ctx.getHeight() / 2 - 24 / 2, 120, 24);
 				btnPlayAgain.setVisible(true);
 			}
-		}).start();
+		});
+		tick.start();
 	}
-
+	
 	private void showClassifica() {
 		String s = "";
 		for (int i = 0; i < Main.scores.size(); i++) {
