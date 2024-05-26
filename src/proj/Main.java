@@ -37,7 +37,6 @@ public class Main {
                     }
                 }
             });
-            System.out.println("chiusura main thread");
         } else {
             Console.run();
         }
@@ -60,6 +59,7 @@ public class Main {
         GUI currentFrame = GUI.getCurrentFrame();
         
         InitAll();
+        scores.clear();
 
         EventQueue.invokeLater(new Runnable() {
             public void run() {

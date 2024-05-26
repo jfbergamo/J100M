@@ -29,6 +29,8 @@ public class GUI extends JFrame {
 	
 	private final float FONT_SIZE = 32.5f;
 
+	private boolean isDisposed = false;
+
 	public GUI() {
 		gui = this; // Tranquillo prof so cosa sto facendo, trusta il processo
 
@@ -44,6 +46,13 @@ public class GUI extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, WIDTH*FACTOR, HEIGHT*FACTOR);
 		
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent e) {
+				isDisposed = true;
+			}
+		});
+
 		// FONT
 		Font font = null;
 		try {
@@ -73,16 +82,18 @@ public class GUI extends JFrame {
 		tick = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				System.out.println("apertura thread");
 				long t = System.currentTimeMillis();
 				do {
+					if (isDisposed) {
+						break;
+					}
 					if (t + dt <= System.currentTimeMillis()) {
 						ctx.repaint();
-						
 						t = System.currentTimeMillis();
 					}
 				} while (ctx.hasNotFinished());
-				showClassifica();
+				if (!isDisposed)
+					showClassifica();
 				btnPlayAgain.setBounds(ctx.getWidth() / 2 - 120 / 2, ctx.getHeight() / 2 - 24 / 2, 120, 24);
 				btnPlayAgain.setVisible(true);
 			}
